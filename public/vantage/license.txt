@@ -1,0 +1,11 @@
+Model Information:
+* title:	2010 Aston Martin V12 Vantage
+* source:	https://sketchfab.com/3d-models/2010-aston-martin-v12-vantage-ccc775b83e444fb7bbae9149f6d1db0b
+* author:	Ddiaz Design (https://sketchfab.com/ddiaz-design)
+
+Model License:
+* license type:	CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions must have the same license.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "2010 Aston Martin V12 Vantage" (https://sketchfab.com/3d-models/2010-aston-martin-v12-vantage-ccc775b83e444fb7bbae9149f6d1db0b) by Ddiaz Design (https://sketchfab.com/ddiaz-design) licensed under CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)

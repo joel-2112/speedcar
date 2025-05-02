@@ -1,0 +1,11 @@
+Model Information:
+* title:	Fictional supercar - V12 Goblin
+* source:	https://sketchfab.com/3d-models/fictional-supercar-v12-goblin-0a20e49ad5774d778567cb5c3f345786
+* author:	ollitei (https://sketchfab.com/ollitei)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Fictional supercar - V12 Goblin" (https://sketchfab.com/3d-models/fictional-supercar-v12-goblin-0a20e49ad5774d778567cb5c3f345786) by ollitei (https://sketchfab.com/ollitei) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

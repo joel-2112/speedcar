@@ -1,0 +1,11 @@
+Model Information:
+* title:	BMW-3 Car Demo
+* source:	https://sketchfab.com/3d-models/bmw-3-car-demo-93fce305fc644254a20f01fda89abe97
+* author:	Naveen Manja (https://sketchfab.com/naveen)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "BMW-3 Car Demo" (https://sketchfab.com/3d-models/bmw-3-car-demo-93fce305fc644254a20f01fda89abe97) by Naveen Manja (https://sketchfab.com/naveen) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
