@@ -196,7 +196,7 @@ const BMWCanvas = forwardRef((_, ref) => {
             enableRotate={true}
             enablePan={true}
             maxPolarAngle={Math.PI / 2}
-            minPolarAngle={Math.PI / 2}
+            minPolarAngle={Math.PI / 4}
             minDistance={2}
             maxDistance={10}
           />
@@ -206,7 +206,7 @@ const BMWCanvas = forwardRef((_, ref) => {
       </Canvas>
 
       {/* Indigo Overlay with intro */}
-      <div className="absolute top-0 left-0  w-full h-full bg-indigo-900 bg-opacity-30 pointer-events-none flex items-center justify-between p-10">
+      <div className="absolute top-0 left-0  w-1/2 h-full bg-indigo-900 bg-opacity-30 pointer-events-none flex items-center justify-between p-10">
         {/* Left intro */}
         <div className="max-w-md pointer-events-auto">
           <h1 className="text-white text-5xl font-extrabold mb-4 leading-tight">
