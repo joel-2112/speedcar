@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import ford from '../assets/ford.jpg'; 
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,48 +16,41 @@ function NavBar() {
     open: { height: 'auto', opacity: 1, transition: { duration: 0.3 } },
   };
 
+  const linkClasses = ({ isActive }) =>
+    `px-5 py-2 rounded-sm backdrop-blur-sm transition-all duration-300 ${
+      isActive
+        ? 'bg-indigo-500 text-white shadow-sm font-medium'
+        : 'text-indigo-500 hover:bg-indigo-500 hover:text-white'
+    }`;
+
   return (
     <motion.nav
-      className="bg-blue-800 text-white p-4 sticky top-0 z-50"
+      className="fixed top-0 w-full bg-white/80 backdrop-blur-md shadow z-50"
       variants={navVariants}
       initial="hidden"
       animate="visible"
     >
-      <div className="container mx-auto flex justify-between items-center">
+      <nav className="container mx-auto flex items-center justify-between py-2 px-6 md:px-12">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center">
-          <img src="/images/logo.png" alt="Car Showroom Logo" className="h-10" />
+        <NavLink to="/" className="flex items-center space-x-2">
+          <img src={ford} alt="Car" className="h-10 w-10 rounded-full border-2 border-white" />
+          <span className="font-semibold text-lg tracking-wide">SpeedCar</span>
         </NavLink>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-6">
+        <ul className="hidden md:flex space-x-4">
           <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? 'underline font-semibold' : 'hover:underline'
-              }
-            >
+            <NavLink to="/" className={linkClasses}>
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/cars"
-              className={({ isActive }) =>
-                isActive ? 'underline font-semibold' : 'hover:underline'
-              }
-            >
+            <NavLink to="/cars" className={linkClasses}>
               Cars
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                isActive ? 'underline font-semibold' : 'hover:underline'
-              }
-            >
+            <NavLink to="/contact" className={linkClasses}>
               Contact
             </NavLink>
           </li>
@@ -69,7 +63,7 @@ function NavBar() {
           aria-label="Toggle menu"
         >
           <svg
-            className="w-6 h-6"
+            className="w-6 h-6 text-white"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -83,7 +77,7 @@ function NavBar() {
             ></path>
           </svg>
         </button>
-      </div>
+      </nav>
 
       {/* Mobile Menu */}
       <motion.div
@@ -92,37 +86,19 @@ function NavBar() {
         initial="closed"
         animate={isOpen ? 'open' : 'closed'}
       >
-        <ul className="flex flex-col space-y-4 p-4">
+        <ul className="flex flex-col space-y-2 p-4">
           <li>
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive ? 'underline font-semibold' : 'hover:underline'
-              }
-              onClick={() => setIsOpen(false)}
-            >
+            <NavLink to="/" className={linkClasses} onClick={() => setIsOpen(false)}>
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/cars"
-              className={({ isActive }) =>
-                isActive ? 'underline font-semibold' : 'hover:underline'
-              }
-              onClick={() => setIsOpen(false)}
-            >
+            <NavLink to="/cars" className={linkClasses} onClick={() => setIsOpen(false)}>
               Cars
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                isActive ? 'underline font-semibold' : 'hover:underline'
-              }
-              onClick={() => setIsOpen(false)}
-            >
+            <NavLink to="/contact" className={linkClasses} onClick={() => setIsOpen(false)}>
               Contact
             </NavLink>
           </li>
