@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import CanvasLoader from '../components/ui/CanvasLoader';
-import { FaCarOn } from 'react-icons/fa6';
+import { FaCarOn, FaList } from 'react-icons/fa6';
 
 const BMWModel = ({ isMobile }) => {
   const bmw = useGLTF('/bmwcruz/scene.gltf');
@@ -54,7 +54,7 @@ const BMWCanvas = forwardRef((_, ref) => {
   const [error, setError] = useState(null);
   const controlsRef = useRef();
   const navigate = useNavigate();
-  const audioRef = useRef(new Audio(`/sounds/engine.mp3`));
+  const audioRef = useRef(new Audio(`/sounds/lambergini.mp3`));
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -153,7 +153,7 @@ const BMWCanvas = forwardRef((_, ref) => {
           if (progress < 1) {
             requestAnimationFrame(animate);
           } else {
-            setTimeout(() => navigate('/home'), 500);
+            setTimeout(() => navigate('/car-detail'), 500);
           }
         };
         requestAnimationFrame(animate);
@@ -196,7 +196,7 @@ const BMWCanvas = forwardRef((_, ref) => {
             enableRotate={true}
             enablePan={true}
             maxPolarAngle={Math.PI / 2}
-            minPolarAngle={Math.PI / 4}
+            minPolarAngle={Math.PI / 2}
             minDistance={2}
             maxDistance={10}
           />
@@ -205,22 +205,36 @@ const BMWCanvas = forwardRef((_, ref) => {
         </Suspense>
       </Canvas>
 
-      {/* Indigo Overlay with intro */}
-      <div className="absolute top-0 left-0  w-1/2 h-full bg-indigo-900 bg-opacity-30 pointer-events-none flex items-center justify-between p-10">
-        {/* Left intro */}
+      {/* Indigo Overlay with slide-in */}
+      <motion.div
+        initial={{ x: '-100%' }}
+        animate={{ x: 0, transition: { duration: 1, ease: 'easeOut' } }}
+        className="absolute top-0 left-0 w-1/2 h-full bg-indigo-900 bg-opacity-30 pointer-events-none flex items-center justify-between p-10"
+      >
+        {/* Left intro text */}
         <div className="max-w-md pointer-events-auto">
-          <h1 className="text-white text-5xl font-extrabold mb-4 leading-tight">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 1, duration: 1 } }}
+            className="text-white text-5xl font-extrabold mb-4 leading-tight"
+          >
             Discover <span className="text-indigo-400">Luxury</span><br />
             with BMW
-          </h1>
-          <p className="text-indigo-100 text-lg mb-6">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 1.5, duration: 1 } }}
+            className="text-indigo-100 text-lg mb-6"
+          >
             Experience the ultimate driving machine in 3D. Rotate, explore, and enjoy every curve.
-          </p>
+          </motion.p>
           <motion.button
             onClick={toggleFullScreenAndNavigate}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full text-lg font-semibold shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 2, duration: 1 } }}
           >
             Explore Luxury
           </motion.button>
@@ -228,7 +242,7 @@ const BMWCanvas = forwardRef((_, ref) => {
 
         {/* Right side empty to let car show clearly */}
         <div></div>
-      </div>
+      </motion.div>
 
       {/* Overlay Buttons */}
       <div className="absolute inset-0 z-10 pointer-events-none">
@@ -243,7 +257,7 @@ const BMWCanvas = forwardRef((_, ref) => {
             onMouseEnter={() => setShowTooltip('Fullscreen')}
             onMouseLeave={() => setShowTooltip(null)}
           >
-            ⛶
+          <FaList/>
             <AnimatePresence>
               {showTooltip === 'Fullscreen' && (
                 <motion.div
@@ -252,7 +266,7 @@ const BMWCanvas = forwardRef((_, ref) => {
                   animate={{ opacity: 1, x: 0, transition: { duration: 0.2 } }}
                   exit={{ opacity: 0, x: 10, transition: { duration: 0.2 } }}
                 >
-                  Enter Fullscreen
+                  All Cars
                 </motion.div>
               )}
             </AnimatePresence>
@@ -277,7 +291,7 @@ const BMWCanvas = forwardRef((_, ref) => {
                   animate={{ opacity: 1, x: 0, transition: { duration: 0.2 } }}
                   exit={{ opacity: 0, x: 10, transition: { duration: 0.2 } }}
                 >
-                  Start Engine
+                  Engine Start
                 </motion.div>
               )}
             </AnimatePresence>

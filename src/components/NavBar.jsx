@@ -17,9 +17,9 @@ function NavBar() {
   };
 
   const linkClasses = ({ isActive }) =>
-    `px-5 py-2 rounded-sm backdrop-blur-sm transition-all duration-300 ${
+    `px-5 py-2 rounded-full backdrop-blur-sm transition-all duration-300 ${
       isActive
-        ? 'bg-indigo-500 text-white shadow-sm font-medium'
+        ? 'bg-indigo-500 text-white shadow-sm font-medium '
         : 'text-indigo-500 hover:bg-indigo-500 hover:text-white'
     }`;
 
@@ -38,7 +38,7 @@ function NavBar() {
         </NavLink>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-4">
+        <ul className="hidden md:flex space-x-4 bg-blue-50 p-5 rounded-full ">
           <li>
             <NavLink to="/" className={linkClasses}>
               Home
