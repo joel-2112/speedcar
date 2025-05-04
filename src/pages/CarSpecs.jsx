@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { motion, useAnimation, useViewportScroll } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
+import { motion, useAnimation, useMotionValue, useViewportScroll } from 'framer-motion';
 import carImage from '../assets/toyota.png';
 
 const specs = [
@@ -22,11 +22,31 @@ const CarSpecs = () => {
   const { scrollYProgress } = useViewportScroll();
   const controls = useAnimation();
 
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const carRef = useRef(null);
+
   useEffect(() => {
-    scrollYProgress.onChange((latest) => {
-      controls.start({ opacity: latest < 0.1 ? 1 : 0 });
-    });
-  }, [controls, scrollYProgress]);
+    const handleMouseMove = (e) => {
+      if (carRef.current) {
+        const rect = carRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        mouseX.set(x);
+        mouseY.set(y);
+      }
+    };
+
+    if (carRef.current) {
+      carRef.current.addEventListener('mousemove', handleMouseMove);
+    }
+
+    return () => {
+      if (carRef.current) {
+        carRef.current.removeEventListener('mousemove', handleMouseMove);
+      }
+    };
+  }, [mouseX, mouseY, carRef]);
 
   return (
     <div className="min-h-screen bg-indigo-900 text-white px-6 py-10 relative overflow-hidden">
@@ -35,7 +55,7 @@ const CarSpecs = () => {
       <motion.div
         className="absolute top-0 left-0 w-full h-full pointer-events-none"
         initial={{ opacity: 0 }}
-        animate={controls}
+        animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
         <motion.div
@@ -92,6 +112,7 @@ const CarSpecs = () => {
         animate={{ opacity: 1, scale: 1 }} 
         transition={{ duration: 1 }}
         className="flex justify-center mb-12 relative"
+        ref={carRef}
       >
         <motion.div
           className="relative rounded-xl shadow-2xl overflow-hidden"
@@ -118,6 +139,11 @@ const CarSpecs = () => {
             transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse', delay: 0.5 }}
           />
         </motion.div>
+        <motion.div
+          className="absolute w-16 h-16 bg-indigo-400 rounded-full"
+          style={{ x: mouseX, y: mouseY }}
+          transition={{ type: 'spring', stiffness: 100 }}
+        />
       </motion.div>
 
       {/* Car Name */}
