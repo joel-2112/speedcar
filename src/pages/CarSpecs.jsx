@@ -49,7 +49,7 @@ const CarSpecs = () => {
   }, [mouseX, mouseY, carRef]);
 
   return (
-    <div className="min-h-screen bg-indigo-900 text-white px-6 py-10 relative overflow-hidden">
+    <div className="min-h-screen bg-gray-900 text-white px-6 py-10 relative overflow-hidden">
       
       {/* Background Shapes */}
       <motion.div
@@ -115,14 +115,14 @@ const CarSpecs = () => {
         ref={carRef}
       >
         <motion.div
-          className="relative rounded-xl shadow-2xl overflow-hidden"
+          className="relative rounded-xl p-5 overflow-hidden"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.3 }}
         >
           <motion.img 
             src={carImage} 
             alt="Car" 
-            className="rounded-xl shadow-2xl" 
+            className="rounded-xl " 
             width={900}
             height={500}
           />
