@@ -176,7 +176,7 @@ const BMWCanvas = forwardRef((_, ref) => {
   }
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-screen top-20">
       {isLoading && <CanvasLoader />}
       <Canvas
         style={{ display: isLoading ? 'none' : 'block' }}

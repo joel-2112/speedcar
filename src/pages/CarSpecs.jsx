@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useMotionValue, useScroll, useTransform } from 'framer-motion';
 import carImage from '../assets/toyota.png';
-
+import FloatingBackgroundShapes from '../components/FloatingBackgroundShapes';
+import HistoryCard from '../components/HistoryCard';
 const specs = [
   { label: 'Top Speed', value: '250 km/h' },
   { label: '0-100 km/h', value: '3.5 sec' },
@@ -18,40 +19,6 @@ const history = [
   { year: '2023', description: 'Received multiple awards for innovation and design.' },
 ];
 
-const .FloatingBackgroundShapes = () => (
-  <motion.div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-    {[...Array(6)].map((_, i) => {
-      const size = [24, 32, 40, 20, 28, 36][i];
-      const color = ['indigo-500', 'indigo-400', 'indigo-600', 'indigo-700', 'indigo-500', 'indigo-400'][i];
-      const positions = [
-        { initial: { y: -200, x: '50%' }, animate: { y: 200, x: '50%' } },
-        { initial: { x: -200, y: '50%' }, animate: { x: 200, y: '50%' } },
-        { initial: { y: -200, right: '10%' }, animate: { y: 200, right: '10%' } },
-        { initial: { x: -200, bottom: '10%' }, animate: { x: 200, bottom: '10%' } },
-        { initial: { y: -200, left: '10%' }, animate: { y: 200, left: '10%' } },
-        { initial: { x: -200, top: '10%' }, animate: { x: 200, top: '10%' } },
-      ][i];
-      
-      return (
-        <motion.div
-          key={i}
-          className={`absolute w-${size} h-${size} bg-${color} rounded-full blur-sm`}
-          initial={{ opacity: 0, ...positions.initial }}
-          animate={{ 
-            opacity: [0.3, 0.7, 0.3], 
-            ...positions.animate 
-          }}
-          transition={{ 
-            duration: 5 + Math.random() * 5, 
-            repeat: Infinity, 
-            repeatType: 'reverse',
-            ease: 'easeInOut'
-          }}
-        />
-      );
-    })}
-  </motion.div>
-);
 
 const SpecCard = ({ label, value, index }) => (
   <motion.div
@@ -70,22 +37,7 @@ const SpecCard = ({ label, value, index }) => (
   </motion.div>
 );
 
-const HistoryCard = ({ year, description, index }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ duration: 0.6, delay: index * 0.1 }}
-    whileHover={{ 
-      y: -5,
-      boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.4)"
-    }}
-    className="bg-gradient-to-br from-indigo-900/50 to-indigo-800/70 p-6 rounded-2xl backdrop-blur-md border border-indigo-700/30 transition-all"
-  >
-    <h3 className="text-xl font-semibold mb-2 text-indigo-300">{year}</h3>
-    <p className="text-lg text-indigo-100">{description}</p>
-  </motion.div>
-);
+
 
 const CarSpecs = () => {
   const { scrollYProgress } = useScroll();

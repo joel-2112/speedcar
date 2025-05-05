@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ford from '../assets/ford.jpg'; 
+import { MdClose, MdMenu } from 'react-icons/md';
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,20 +63,7 @@ function NavBar() {
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'}
-            ></path>
-          </svg>
+        {isOpen? <MdClose color='blue'/> : <MdMenu color='blue'/>}
         </button>
       </nav>
 
