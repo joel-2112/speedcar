@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useMotionValue, useScroll, useTransform } from 'framer-motion';
-import carImage from '../assets/toyota.png';
+import carImage from '../assets/car1.png';
 import FloatingBackgroundShapes from '../components/FloatingBackgroundShapes';
 import HistoryCard from '../components/HistoryCard';
+import FeaturedCars from '../components/FeaturedCars';
+
 const specs = [
   { label: 'Top Speed', value: '250 km/h' },
   { label: '0-100 km/h', value: '3.5 sec' },
@@ -174,7 +176,10 @@ const CarSpecs = () => {
         ))}
       </motion.div>
 
-      {/* History Section */}
+
+
+       <FeaturedCars />
+             {/* History Section */}
       <motion.section 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -197,26 +202,6 @@ const CarSpecs = () => {
           ))}
         </div>
       </motion.section>
-
-      {/* Call to Action */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="text-center mt-16"
-      >
-        <motion.button
-          whileHover={{ 
-            scale: 1.05,
-            boxShadow: "0 5px 15px rgba(99, 102, 241, 0.4)"
-          }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white py-4 px-10 rounded-full text-lg font-semibold shadow-lg transition-all"
-        >
-          Reserve Now
-        </motion.button>
-      </motion.div>
     </div>
   );
 };
