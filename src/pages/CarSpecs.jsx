@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { motion, useAnimation, useMotionValue, useViewportScroll } from 'framer-motion';
+import { motion, useAnimation, useMotionValue, useScroll, useTransform } from 'framer-motion';
 import carImage from '../assets/toyota.png';
 
 const specs = [
@@ -18,10 +18,80 @@ const history = [
   { year: '2023', description: 'Received multiple awards for innovation and design.' },
 ];
 
-const CarSpecs = () => {
-  const { scrollYProgress } = useViewportScroll();
-  const controls = useAnimation();
+const .FloatingBackgroundShapes = () => (
+  <motion.div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+    {[...Array(6)].map((_, i) => {
+      const size = [24, 32, 40, 20, 28, 36][i];
+      const color = ['indigo-500', 'indigo-400', 'indigo-600', 'indigo-700', 'indigo-500', 'indigo-400'][i];
+      const positions = [
+        { initial: { y: -200, x: '50%' }, animate: { y: 200, x: '50%' } },
+        { initial: { x: -200, y: '50%' }, animate: { x: 200, y: '50%' } },
+        { initial: { y: -200, right: '10%' }, animate: { y: 200, right: '10%' } },
+        { initial: { x: -200, bottom: '10%' }, animate: { x: 200, bottom: '10%' } },
+        { initial: { y: -200, left: '10%' }, animate: { y: 200, left: '10%' } },
+        { initial: { x: -200, top: '10%' }, animate: { x: 200, top: '10%' } },
+      ][i];
+      
+      return (
+        <motion.div
+          key={i}
+          className={`absolute w-${size} h-${size} bg-${color} rounded-full blur-sm`}
+          initial={{ opacity: 0, ...positions.initial }}
+          animate={{ 
+            opacity: [0.3, 0.7, 0.3], 
+            ...positions.animate 
+          }}
+          transition={{ 
+            duration: 5 + Math.random() * 5, 
+            repeat: Infinity, 
+            repeatType: 'reverse',
+            ease: 'easeInOut'
+          }}
+        />
+      );
+    })}
+  </motion.div>
+);
 
+const SpecCard = ({ label, value, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ duration: 0.6, delay: index * 0.1 }}
+    whileHover={{ 
+      y: -5,
+      boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.4)"
+    }}
+    className="bg-gradient-to-br from-indigo-900/50 to-indigo-800/70 p-6 rounded-2xl backdrop-blur-md border border-indigo-700/30 transition-all"
+  >
+    <h2 className="text-xl font-semibold mb-2 text-indigo-200">{label}</h2>
+    <p className="text-2xl font-bold text-white">{value}</p>
+  </motion.div>
+);
+
+const HistoryCard = ({ year, description, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ duration: 0.6, delay: index * 0.1 }}
+    whileHover={{ 
+      y: -5,
+      boxShadow: "0 10px 25px -5px rgba(99, 102, 241, 0.4)"
+    }}
+    className="bg-gradient-to-br from-indigo-900/50 to-indigo-800/70 p-6 rounded-2xl backdrop-blur-md border border-indigo-700/30 transition-all"
+  >
+    <h3 className="text-xl font-semibold mb-2 text-indigo-300">{year}</h3>
+    <p className="text-lg text-indigo-100">{description}</p>
+  </motion.div>
+);
+
+const CarSpecs = () => {
+  const { scrollYProgress } = useScroll();
+  const carOpacity = useTransform(scrollYProgress, [0, 0.2, 0.3], [1, 0.5, 0]);
+  const carScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.9]);
+  
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const carRef = useRef(null);
@@ -32,205 +102,169 @@ const CarSpecs = () => {
         const rect = carRef.current.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        mouseX.set(x);
-        mouseY.set(y);
+        mouseX.set(x - 30); // Center the orb
+        mouseY.set(y - 30);
       }
     };
 
-    if (carRef.current) {
-      carRef.current.addEventListener('mousemove', handleMouseMove);
+    const currentRef = carRef.current;
+    if (currentRef) {
+      currentRef.addEventListener('mousemove', handleMouseMove);
     }
 
     return () => {
-      if (carRef.current) {
-        carRef.current.removeEventListener('mousemove', handleMouseMove);
+      if (currentRef) {
+        currentRef.removeEventListener('mousemove', handleMouseMove);
       }
     };
-  }, [mouseX, mouseY, carRef]);
+  }, [mouseX, mouseY]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white px-6 py-10 relative overflow-hidden">
+    <div className="min-h-screen bg-gray-900  text-white px-6 py-10 relative overflow-hidden">
+      <FloatingBackgroundShapes />
       
-      {/* Background Shapes */}
-      <motion.div
-        className="absolute top-0 left-0 w-full h-full pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
-        <motion.div
-          className="absolute w-24 h-24 bg-indigo-500 rounded-full blur-sm"
-          initial={{ y: -200, x: '50%' }}
-          animate={{ y: 200, x: '50%' }}
-          transition={{ duration: 3, repeat: Infinity, repeatType: 'reverse' }}
-        />
-        <motion.div
-          className="absolute w-32 h-32 bg-indigo-400 rounded-full blur-sm"
-          initial={{ x: -200, y: '50%' }}
-          animate={{ x: 200, y: '50%' }}
-          transition={{ duration: 3, repeat: Infinity, repeatType: 'reverse' }}
-        />
-        <motion.div
-          className="absolute w-40 h-40 bg-indigo-600 rounded-full blur-sm"
-          initial={{ y: -200, right: '10%' }}
-          animate={{ y: 200, right: '10%' }}
-          transition={{ duration: 3, repeat: Infinity, repeatType: 'reverse' }}
-        />
-        <motion.div
-          className="absolute w-20 h-20 bg-indigo-700 rounded-full blur-sm"
-          initial={{ x: -200, bottom: '10%' }}
-          animate={{ x: 200, bottom: '10%' }}
-          transition={{ duration: 3, repeat: Infinity, repeatType: 'reverse' }}
-        />
-        <motion.div
-          className="absolute w-28 h-28 bg-indigo-500 rounded-full blur-sm"
-          initial={{ y: -200, left: '10%' }}
-          animate={{ y: 200, left: '10%' }}
-          transition={{ duration: 3, repeat: Infinity, repeatType: 'reverse' }}
-        />
-        <motion.div
-          className="absolute w-36 h-36 bg-indigo-400 rounded-full blur-sm"
-          initial={{ x: -200, top: '10%' }}
-          animate={{ x: 200, top: '10%' }}
-          transition={{ duration: 3, repeat: Infinity, repeatType: 'reverse' }}
-        />
-      </motion.div>
-
       {/* Heading */}
-      <motion.h1 
+      <motion.div 
         initial={{ opacity: 0, y: -50 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.8 }}
-        className="text-4xl md:text-6xl font-bold text-center mb-12"
-      >
-        Explore the <span className="text-indigo-400">Future</span> of Driving
-      </motion.h1>
-
-      {/* Car Image */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.8 }} 
-        animate={{ opacity: 1, scale: 1 }} 
-        transition={{ duration: 1 }}
-        className="flex justify-center mb-12 relative"
-        ref={carRef}
-      >
-        <motion.div
-          className="relative rounded-xl p-5 overflow-hidden"
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.img 
-            src={carImage} 
-            alt="Car" 
-            className="rounded-xl " 
-            width={900}
-            height={500}
-          />
-          <motion.div
-            className="absolute top-0 left-0 w-full h-full border-4 border-indigo-400 rounded-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse' }}
-          />
-          <motion.div
-            className="absolute top-0 left-0 w-full h-full border-4 border-indigo-400 rounded-xl blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse', delay: 0.5 }}
-          />
-        </motion.div>
-        <motion.div
-          className="absolute w-16 h-16 bg-indigo-400 rounded-full"
-          style={{ x: mouseX, y: mouseY }}
-          transition={{ type: 'spring', stiffness: 100 }}
-        />
-      </motion.div>
-
-      {/* Car Name */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl font-bold text-indigo-400"
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: 100, opacity: 0 }}
-        transition={{ duration: 1, repeat: Infinity, repeatType: 'reverse' }}
-      >
-        <p>Indigo</p>
-      </motion.div>
-
-      {/* Description */}
-      <motion.div 
-        initial={{ opacity: 0, y: 50 }} 
         animate={{ opacity: 1, y: 0 }} 
         transition={{ duration: 0.8 }}
         className="text-center mb-12"
       >
-        <p className="text-lg md:text-xl">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">
+          Explore the <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-600">Future</span> of Driving
+        </h1>
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="text-lg md:text-xl max-w-2xl mx-auto text-indigo-100"
+        >
           Step into the future with our latest electric vehicle. Experience unparalleled performance, cutting-edge technology, and a design that redefines luxury.
-        </p>
+        </motion.p>
       </motion.div>
 
-      {/* Specs */}
+      {/* Car Image with Scroll Effects */}
       <motion.div 
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        transition={{ staggerChildren: 0.2 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
+        className="flex justify-center mb-12 relative"
+        ref={carRef}
+      >
+        <motion.div
+          className="relative rounded-xl overflow-hidden"
+          style={{ opacity: carOpacity, scale: carScale }}
+          transition={{ type: 'spring', damping: 10 }}
+        >
+          <motion.img 
+            src={carImage} 
+            alt="Car" 
+            className="rounded-xl"
+            width={900}
+            height={500}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          />
+          <motion.div
+            className="absolute inset-0 border-4 border-indigo-400 rounded-xl pointer-events-none"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ 
+              opacity: [0.3, 0.8, 0.3],
+              scale: [0.95, 1, 0.95]
+            }}
+            transition={{ 
+              duration: 3, 
+              repeat: Infinity, 
+              ease: "easeInOut"
+            }}
+          />
+        </motion.div>
+        
+        {/* Floating orb that follows mouse */}
+        <motion.div
+          className="absolute w-16 h-16 bg-indigo-400 rounded-full pointer-events-none"
+          style={{ 
+            x: mouseX, 
+            y: mouseY,
+            background: "radial-gradient(circle, rgba(99,102,241,0.8) 0%, rgba(99,102,241,0) 70%)"
+          }}
+          transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+        />
+      </motion.div>
+
+      {/* Car Name Floating Overlay */}
+      <motion.div
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ 
+          opacity: [0.7, 1, 0.7],
+          y: [20, 0, 20]
+        }}
+        transition={{ 
+          duration: 4, 
+          repeat: Infinity, 
+          ease: "easeInOut"
+        }}
+      >
+        <h2 className="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-indigo-600 opacity-80">
+          Indigo
+        </h2>
+      </motion.div>
+
+      {/* Specs Grid */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16"
       >
         {specs.map((spec, index) => (
-          <motion.div 
-            key={index}
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            transition={{ duration: 0.6 }}
-            className="bg-indigo-800 bg-opacity-50 p-6 rounded-2xl shadow-lg backdrop-blur-md hover:scale-105 transform transition duration-300"
-          >
-            <h2 className="text-xl font-semibold mb-2">{spec.label}</h2>
-            <p className="text-2xl font-bold text-indigo-400">{spec.value}</p>
-          </motion.div>
+          <SpecCard key={index} index={index} {...spec} />
         ))}
       </motion.div>
 
-      {/* History */}
-      <motion.div 
-        initial={{ opacity: 0, y: 50 }} 
-        animate={{ opacity: 1, y: 0 }} 
+      {/* History Section */}
+      <motion.section 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="text-center mt-16 mb-12"
+        className="max-w-5xl mx-auto mb-16"
       >
-        <h2 className="text-3xl font-bold mb-6">History</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <motion.h2 
+          className="text-3xl font-bold mb-8 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          Our <span className="text-indigo-400">Journey</span>
+        </motion.h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {history.map((item, index) => (
-            <motion.div 
-              key={index}
-              variants={{
-                hidden: { opacity: 0, y: 50 },
-                visible: { opacity: 1, y: 0 },
-              }}
-              transition={{ duration: 0.6 }}
-              className="bg-indigo-800 bg-opacity-50 p-6 rounded-2xl shadow-lg backdrop-blur-md hover:scale-105 transform transition duration-300"
-            >
-              <h3 className="text-xl font-semibold mb-2">{item.year}</h3>
-              <p className="text-lg">{item.description}</p>
-            </motion.div>
+            <HistoryCard key={index} index={index} {...item} />
           ))}
         </div>
-      </motion.div>
+      </motion.section>
 
       {/* Call to Action */}
       <motion.div 
-        initial={{ opacity: 0, y: 50 }} 
-        whileInView={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.8, delay: 0.5 }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.3 }}
         className="text-center mt-16"
       >
-        <button className="bg-indigo-500 hover:bg-indigo-600 text-white py-4 px-10 rounded-full text-lg font-semibold shadow-lg transition duration-300">
+        <motion.button
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: "0 5px 15px rgba(99, 102, 241, 0.4)"
+          }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white py-4 px-10 rounded-full text-lg font-semibold shadow-lg transition-all"
+        >
           Reserve Now
-        </button>
+        </motion.button>
       </motion.div>
-
     </div>
   );
 };
