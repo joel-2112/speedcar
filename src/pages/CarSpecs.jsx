@@ -4,6 +4,7 @@ import carImage from '../assets/car1.png';
 import FloatingBackgroundShapes from '../components/FloatingBackgroundShapes';
 import HistoryCard from '../components/HistoryCard';
 import FeaturedCars from '../components/FeaturedCars';
+import CarList from './CarList';
 
 const specs = [
   { label: 'Top Speed', value: '250 km/h' },
@@ -179,6 +180,7 @@ const CarSpecs = () => {
 
 
        <FeaturedCars />
+       <CarList/> 
              {/* History Section */}
       <motion.section 
         initial={{ opacity: 0 }}
