@@ -109,7 +109,7 @@ const FeaturedCars = () => {
                 transition={{ delay: 0.5, duration: 0.8 }}
                 className="text-white"
               >
-                <div className="text-sm font-semibold tracking-wider text-red-400 mb-1">
+                <div className="text-sm font-semibold tracking-wider text-red-500 mb-1">
                   {cars[currentIndex].type}
                 </div>
                 <h2 className="text-4xl font-bold mb-4">{cars[currentIndex].name}</h2>
