@@ -1,9 +1,11 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { FaCar, FaGasPump, FaSnowflake, FaChair } from "react-icons/fa";
 import car1 from "../assets/car1.png";
 import car2 from "../assets/car2.jpg";
 import car3 from "../assets/car3.jpg";
+import NavBar from "../components/NavBar";
 
 const cars = [
   {
@@ -36,27 +38,46 @@ const cars = [
 ];
 
 const CarList = () => {
+  const controls = useAnimation();
+  const { ref, inView } = useInView({ triggerOnce: true });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-5 md:px-20">
+        <NavBar />
       <h2 className="text-3xl font-bold text-center mb-10 text-gray-800">
         Choose Your Ride
       </h2>
 
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        ref={ref}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        transition={{ staggerChildren: 0.2 }}
+        animate={controls}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.3,
+              when: "beforeChildren",
+            },
+          },
+        }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
       >
         {cars.map((car) => (
           <motion.div
             key={car.id}
             variants={{
               hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeInOut" } },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
             }}
-            whileHover={{ scale: 1.05, rotate: [0, 2, -2, 2, -2, 0] }}
+            whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
             className="bg-white rounded-2xl shadow-lg p-5 cursor-pointer"
           >
