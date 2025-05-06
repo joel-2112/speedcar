@@ -180,7 +180,6 @@ const CarSpecs = () => {
 
 
        <FeaturedCars />
-       <CarList/> 
              {/* History Section */}
       <motion.section 
         initial={{ opacity: 0 }}
